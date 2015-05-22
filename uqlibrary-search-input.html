@@ -19,6 +19,21 @@ Reusable search input
 <polymer-element name="uqlibrary-search-input" attributes="narrow placeholderText">
     <template>
         <style>
+            input {
+                color: #fff;
+            }
+            ::-webkit-input-placeholder { /* WebKit browsers */
+                color:    rgba(255,255,255,0.7);
+            }
+            :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+                color:    rgba(255,255,255,0.7);
+            }
+            ::-moz-placeholder { /* Mozilla Firefox 19+ */
+                color:    rgba(255,255,255,0.7);
+            }
+            :-ms-input-placeholder { /* Internet Explorer 10+ */
+                color:    rgba(255,255,255,0.7);
+            }
         </style>
         <core-icon-button icon="search" on-tap="{{revealSearch}}"></core-icon-button>
         <input id="input" placeholder="{{placeholderText}}" is="core-input" hidden?="{{narrow}}">
