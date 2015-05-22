@@ -35,8 +35,13 @@ Reusable search input
                 color:    rgba(255,255,255,0.7);
             }
         </style>
-        <core-icon-button icon="search" on-tap="{{revealSearch}}"></core-icon-button>
-        <input id="input" placeholder="{{placeholderText}}" is="core-input" hidden?="{{narrow}}">
+
+        <!--back arrow is hidden if view is not narrow and if it's not in search mode-->
+        <core-icon-button icon="arrow-back" on-tap="{{hideSearch}}" hidden?="{{searchIsHidden || !narrow}}"></core-icon-button>
+        <core-icon-button icon="search" on-tap="{{revealSearch}}" hidden?="{{narrow && !searchIsHidden}}"></core-icon-button>
+        <input id="input" placeholder="{{placeholderText}}" is="core-input" hidden?="{{narrow && searchIsHidden}}">
+
+
     </template>
     <script>
         Polymer('uqlibrary-search-input', {
@@ -46,7 +51,13 @@ Reusable search input
             },
             revealSearch: function() {
                 this.fire('uqlibrary-search-input-clicked');
-//                this.searchIsHidden = false;
+                that = this;
+                that.searchIsHidden = false;
+            },
+            hideSearch: function() {
+                this.fire('uqlibrary-search-input-back');
+                that = this;
+                that.searchIsHidden = true;
             }
         });
     </script>
