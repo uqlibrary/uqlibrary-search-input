@@ -16,12 +16,12 @@ Reusable search input
 @homepage https://github.com/uqlibrary/uqlibrary-search-input
 -->
 
-<polymer-element name="uqlibrary-search-input" attributes="narrow">
+<polymer-element name="uqlibrary-search-input" attributes="narrow placeholderText">
     <template>
         <style>
         </style>
         <core-icon-button icon="search" on-tap="{{revealSearch}}"></core-icon-button>
-        <input id="input" placeholder="Search" is="core-input" hidden?="{{searchIsHidden}}">
+        <input id="input" placeholder="{{placeholderText}}" is="core-input" hidden?="{{narrow}}">
     </template>
     <script>
         Polymer('uqlibrary-search-input', {
