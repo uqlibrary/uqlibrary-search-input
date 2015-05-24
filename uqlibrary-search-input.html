@@ -18,27 +18,8 @@ Reusable search input
 
 <polymer-element name="uqlibrary-search-input" attributes="narrow placeholderText">
   <template>
-    <style>
-      /*search input uses white and full width of a flex */
-      #input {
-        color: #fff;
-        width: 100%;
-        height: 41px;
-      }
-      /*
-      search input placeholder text should be weaker than user's input text,
-       this gives it material design level of transparency, across browsers
-       */
-      ::-webkit-input-placeholder { /* WebKit browsers */
-        color:    rgba(255,255,255,0.7);
-      }
-      ::-moz-placeholder { /* Mozilla Firefox 19+ */
-        color:    rgba(255,255,255,0.7);
-      }
-      :-ms-input-placeholder { /* Internet Explorer 10+ */
-        color:    #ddd;
-      }
-    </style>
+    <link rel="stylesheet" href="../uqlibrary-elements/resources/theme/component.css">
+    <link rel="stylesheet" href="uqlibrary-search-input.css">
 
     <!--back arrow is hidden if view is not narrow and if it's not in search mode-->
     <core-icon-button icon="arrow-back" on-tap="{{hideSearch}}" hidden?="{{searchIsHidden || !narrow}}"></core-icon-button>
