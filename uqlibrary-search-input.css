@@ -21,15 +21,17 @@ this gives it material design level of transparency, across browsers
   color: #ddd; }
 
 .activateSearch {
-  color: #333 !important; }
-  .activateSearch::-webkit-input-placeholder {
-    /* WebKit browsers, Mozilla Firefox 19+ */
-    color: #999; }
-  .activateSearch::-moz-placeholder {
-    /* WebKit browsers, Mozilla Firefox 19+ */
-    color: #999; }
-  .activateSearch:-ms-input-placeholder {
-    /* Internet Explorer 10+ */
-    color: #999; }
+  color: #999 !important; }
+  .activateSearch #input {
+    color: rgba(0, 0, 0, 0.87) !important; }
+    .activateSearch #input::-webkit-input-placeholder {
+      /* WebKit browsers, Mozilla Firefox 19+ */
+      color: #999; }
+    .activateSearch #input::-moz-placeholder {
+      /* WebKit browsers, Mozilla Firefox 19+ */
+      color: #999; }
+    .activateSearch #input:-ms-input-placeholder {
+      /* Internet Explorer 10+ */
+      color: #999; }
 
 /*# sourceMappingURL=uqlibrary-search-input.css.map */

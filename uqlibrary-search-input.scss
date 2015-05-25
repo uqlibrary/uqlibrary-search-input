@@ -20,16 +20,18 @@ this gives it material design level of transparency, across browsers
   color:    #ddd;
 }
 
-
 .activateSearch {
-  color: #333 !important;
-  &::-webkit-input-placeholder { /* WebKit browsers, Mozilla Firefox 19+ */
-    color:    #999;
-  }
-  &::-moz-placeholder { /* WebKit browsers, Mozilla Firefox 19+ */
-    color:    #999;
-  }
-  &:-ms-input-placeholder { /* Internet Explorer 10+ */
-    color:    #999;
+  color: #999 !important;
+  #input {
+    color: $text !important;
+    &::-webkit-input-placeholder { /* WebKit browsers, Mozilla Firefox 19+ */
+      color:    #999;
+    }
+    &::-moz-placeholder { /* WebKit browsers, Mozilla Firefox 19+ */
+      color:    #999;
+    }
+    &:-ms-input-placeholder { /* Internet Explorer 10+ */
+      color:    #999;
+    }
   }
 }

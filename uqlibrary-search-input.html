@@ -21,10 +21,11 @@ Reusable search input
     <link rel="stylesheet" href="uqlibrary-search-input.css">
 
     <!--back arrow is hidden if view is not narrow and if it's not in search mode-->
+    <div horizontal layout class="{{ {activateSearch: !searchIsHidden} | tokenList }}">
     <core-icon-button icon="arrow-back" class="{{ {activateSearch: !searchIsHidden} | tokenList }}" on-tap="{{hideSearch}}" hidden?="{{searchIsHidden || !narrow}}"></core-icon-button>
     <core-icon-button icon="search" on-tap="{{clickedSearch}}" hidden?="{{narrow && !searchIsHidden}}"></core-icon-button>
-    <input id="input" class="{{ {activateSearch: !searchIsHidden} | tokenList }}" placeholder="{{placeholderText}}" is="core-input" hidden?="{{narrow && searchIsHidden}}">
-
+    <input flex id="input" placeholder="{{placeholderText}}" is="core-input" hidden?="{{narrow && searchIsHidden}}">
+    </div>
   </template>
   <script>
     Polymer('uqlibrary-search-input', {
