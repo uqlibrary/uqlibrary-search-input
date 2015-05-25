@@ -1,7 +1,6 @@
 <link rel="import" href="../core-input/core-input.html">
 <link rel="import" href="../core-icon-button/core-icon-button.html">
 
-
 <!--
 
 Reusable search input
@@ -22,10 +21,9 @@ Reusable search input
     <link rel="stylesheet" href="uqlibrary-search-input.css">
 
     <!--back arrow is hidden if view is not narrow and if it's not in search mode-->
-    <core-icon-button icon="arrow-back" on-tap="{{hideSearch}}" hidden?="{{searchIsHidden || !narrow}}"></core-icon-button>
+    <core-icon-button icon="arrow-back" class="{{ {activateSearch: !searchIsHidden} | tokenList }}" on-tap="{{hideSearch}}" hidden?="{{searchIsHidden || !narrow}}"></core-icon-button>
     <core-icon-button icon="search" on-tap="{{clickedSearch}}" hidden?="{{narrow && !searchIsHidden}}"></core-icon-button>
-    <input id="input" placeholder="{{placeholderText}}" is="core-input" hidden?="{{narrow && searchIsHidden}}">
-
+    <input id="input" class="{{ {activateSearch: !searchIsHidden} | tokenList }}" placeholder="{{placeholderText}}" is="core-input" hidden?="{{narrow && searchIsHidden}}">
 
   </template>
   <script>

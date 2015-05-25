@@ -1,6 +1,6 @@
 @import "../uqlibrary-elements/resources/theme/variables";
 
-/*search input uses white and full width of a flex */
+/*search input uses white text colour and full width of a flex */
 #input {
   color: #fff;
   width: 100%;
@@ -8,14 +8,28 @@
 }
 /*
 search input placeholder text should be weaker than user's input text,
- this gives it material design level of transparency, across browsers
- */
-::-webkit-input-placeholder { /* WebKit browsers */
+this gives it material design level of transparency, across browsers
+*/
+::-webkit-input-placeholder { /* WebKit browsers, Mozilla Firefox 19+ */
   color:    rgba(255,255,255,0.7);
 }
-::-moz-placeholder { /* Mozilla Firefox 19+ */
-  color:    rgba(255,255,255,0.7);
+#input::-moz-placeholder { /* WebKit browsers, Mozilla Firefox 19+ */
+    color:    rgba(255,255,255,0.7);
 }
-:-ms-input-placeholder { /* Internet Explorer 10+ */
+#input:-ms-input-placeholder { /* Internet Explorer 10+ */
   color:    #ddd;
+}
+
+
+.activateSearch {
+  color: #333 !important;
+  &::-webkit-input-placeholder { /* WebKit browsers, Mozilla Firefox 19+ */
+    color:    #999;
+  }
+  &::-moz-placeholder { /* WebKit browsers, Mozilla Firefox 19+ */
+    color:    #999;
+  }
+  &:-ms-input-placeholder { /* Internet Explorer 10+ */
+    color:    #999;
+  }
 }
