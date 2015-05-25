@@ -15,6 +15,10 @@
     "web-component",
     "polymer"
   ],
+  "ignore": [
+    "/.*",
+    "/tests/"
+  ],
   "main": "uqlibrary-search-input.html",
   "private": false,
   "repository": {
