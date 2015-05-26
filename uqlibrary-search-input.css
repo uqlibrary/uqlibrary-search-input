@@ -1,5 +1,5 @@
 /*search input uses white text colour and full width of a flex */
-#input {
+#searchInput {
   color: #fff;
   width: 100%;
   height: 44px;
@@ -7,13 +7,13 @@
   search input placeholder text should be weaker than user's input text,
   this gives it material design level of transparency, across browsers
   */ }
-  #input::-moz-placeholder {
+  #searchInput::-moz-placeholder {
     /* Mozilla Firefox 19+ */
     color: rgba(255, 255, 255, 0.87); }
-  #input::-webkit-input-placeholder {
+  #searchInput::-webkit-input-placeholder {
     /* WebKit browsers, Mozilla Firefox 19+ */
     color: rgba(255, 255, 255, 0.54); }
-  #input:-ms-input-placeholder {
+  #searchInput:-ms-input-placeholder {
     /* Internet Explorer 10+ */
     color: rgba(255, 255, 255, 0.87); }
 
@@ -21,15 +21,15 @@
   color: #999999 !important; }
   .activateSearch core-icon {
     color: #757575; }
-  .activateSearch #input {
+  .activateSearch #searchInput {
     color: rgba(0, 0, 0, 0.87) !important; }
-    .activateSearch #input::-webkit-input-placeholder {
+    .activateSearch #searchInput::-webkit-input-placeholder {
       /* WebKit browsers, Mozilla Firefox 19+ */
       color: #999999; }
-    .activateSearch #input::-moz-placeholder {
+    .activateSearch #searchInput::-moz-placeholder {
       /* WebKit browsers, Mozilla Firefox 19+ */
       color: #999999; }
-    .activateSearch #input:-ms-input-placeholder {
+    .activateSearch #searchInput:-ms-input-placeholder {
       /* Internet Explorer 10+ */
       color: #999999; }
 

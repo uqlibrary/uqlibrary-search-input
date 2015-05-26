@@ -2,7 +2,7 @@
 
 /*search input uses white text colour and full width of a flex */
 
-#input {
+#searchInput {
   color: $white;
   width: $full-width;
   height: $touch-target-size;
@@ -26,7 +26,7 @@
   core-icon {
     color: $uq-text-secondary;
   }
-  #input {
+  #searchInput {
     color: $text !important;
     &::-webkit-input-placeholder { /* WebKit browsers, Mozilla Firefox 19+ */
       color:    $uq-placeholder-inverse;
