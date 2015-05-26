@@ -17,14 +17,14 @@ Reusable search input
 
 <polymer-element name="uqlibrary-search-input" attributes="narrow placeholderText">
   <template>
-    <link rel="stylesheet" href="../uqlibrary-elements/resources/theme/component.css">
+    <!--<link rel="stylesheet" href="../uqlibrary-elements/resources/theme/component.css">-->
     <link rel="stylesheet" href="uqlibrary-search-input.css">
 
     <!--back arrow is hidden if view is not narrow and if it's not in search mode-->
     <div horizontal layout class="{{ {activateSearch: !searchIsHidden} | tokenList }}">
-    <core-icon-button icon="arrow-back" class="{{ {activateSearch: !searchIsHidden} | tokenList }}" on-tap="{{hideSearch}}" hidden?="{{searchIsHidden || !narrow}}"></core-icon-button>
-    <core-icon-button icon="search" on-tap="{{clickedSearch}}" hidden?="{{narrow && !searchIsHidden}}"></core-icon-button>
-    <input flex id="input" placeholder="{{placeholderText}}" is="core-input" hidden?="{{narrow && searchIsHidden}}">
+      <core-icon-button icon="arrow-back" class="{{ {activateSearch: !searchIsHidden} | tokenList }}" on-tap="{{hideSearch}}" hidden?="{{searchIsHidden || !narrow}}"></core-icon-button>
+      <core-icon-button icon="search" class="{{ {white: !narrow} | tokenList }}" on-tap="{{clickedSearch}}" hidden?="{{narrow && !searchIsHidden}}"></core-icon-button>
+      <input flex id="input" placeholder="{{placeholderText}}" is="core-input" hidden?="{{narrow && searchIsHidden}}">
     </div>
   </template>
   <script>
