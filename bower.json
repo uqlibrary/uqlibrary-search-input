@@ -28,7 +28,7 @@
   "license": "MIT",
   "homepage": "https://github.com/uqlibrary/uqlibrary-search-input",
   "dependencies": {
-    "uqlibrary-elements": "uqlibrary/uqlibrary-elements",
+    "uqlibrary-atoms": "uqlibrary/uqlibrary-atoms",
     "core-elements": "Polymer/core-elements#0.5.4"
   },
   "devDependencies": {
