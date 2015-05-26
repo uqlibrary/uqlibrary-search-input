@@ -1,7 +1,0 @@
-{
-"version": 3,
-"mappings": ";AAIA,YAAa;EACX,KAAK,ECsPmB,IAAM;EDrP9B,KAAK,EC0CM,IAAI;EDzCf,MAAM,ECoCY,IAAI;;;;;ED/BtB,8BAAoB;;IAClB,KAAK,ECmOgB,yBAAiB;EDjOxC,uCAA6B;;IAC3B,KAAK,EC+NgB,yBAAiB;ED7NxC,kCAAwB;;IACtB,KAAK,EC6NgB,yBAAiB;;ADzN1C,eAAgB;EACd,KAAK,EAAE,kBAAkC;EACzC,yBAAU;IACR,KAAK,ECuJe,OAAe;EDrJrC,4BAAa;IACX,KAAK,EAAE,8BAAgB;IACvB,uDAA6B;;MAC3B,KAAK,ECqJa,OAAe;IDnJnC,8CAAoB;;MAClB,KAAK,ECkJa,OAAe;IDhJnC,kDAAwB;;MACtB,KAAK,EC+Ia,OAAe",
-"sources": ["uqlibrary-search-input.scss","../uqlibrary-elements/resources/theme/_variables.scss"],
-"names": [],
-"file": "uqlibrary-search-input.css"
-}
