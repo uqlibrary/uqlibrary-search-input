@@ -64,8 +64,8 @@ Reusable search input
                      class="flex"
                      placeholder="{{placeholderText}}"
                      value="{{searchFieldValue}}"></paper-input>
-        <div id="suggestionPlaceholder"></div>
-        <template is="dom-if" if="{{enableSearchSuggestions}}">
+        <div id="suggestionPlaceholder" hidden$="{{!enableSearchSuggestions}}">
+
           <paper-menu      id="searchSuggestions"
                            class="list hidden"
                            autoFocusDisabled="true">
@@ -79,11 +79,8 @@ Reusable search input
               </template>
             </iron-selector>
           </paper-menu>
-        </template>
         </div>
-
-
-
+        </div>
       <paper-icon-button icon="search" on-tap="clickedSearch" hidden$="{{!isNarrow}}"></paper-icon-button>
     </div>
   </template>
@@ -245,8 +242,8 @@ Reusable search input
         }
         else if (this.enableSearchSuggestions && ev.detail.key === 'esc') {
           this.selectedSuggestion = -1;
-          this.$.searchSuggestions.opened = false;
-          this.$.filters.opened = false;
+//          this.$.searchSuggestions.opened = false;
+//          this.$.filters.opened = false;
         }
         this.previousKey = ev.detail.key;
       },
@@ -272,11 +269,13 @@ Reusable search input
       },
 
       showSuggestions: function () {
+
         var that = this;
+
 //        this.$.searchSuggestions.toggleClass('hidden');
         this.async(function () {
-          if (this.suggestions.length > 0 && !this.searching) {
-            this.$.searchSuggestions.toggleClass('hidden');
+          if (that.suggestions.length > 0 && !that.searching) {
+            that.$.searchSuggestions.toggleClass('hidden');
           }
 //          else if (this.$.searchSuggestions.classList.contains('hidden')) {
 //            this.$.searchSuggestions.toggleClass('hidden');
