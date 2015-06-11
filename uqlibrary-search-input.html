@@ -1,4 +1,4 @@
-
+<link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../paper-input/paper-input.html">
 <link rel="import" href="../paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../iron-icons/iron-icons.html">
@@ -17,17 +17,16 @@ Reusable search input
 @homepage https://github.com/uqlibrary/uqlibrary-search-input
 -->
 
-<dom-module id="uqlibrary-search-input" attributes="narrow placeholderText enableSearchSuggestions">
-  <link rel="stylesheet" href="uqlibrary-search-input.css">
-  <template is="dom-bind">
+<dom-module id="uqlibrary-search-input">
+  <!--<link rel="stylesheet" href="uqlibrary-search-input.css">-->
+  <template>
     <!--<link rel="stylesheet" href="../uqlibrary-elements/resources/theme/component.css">-->
 
-
     <!--back arrow is hidden if view is not narrow and if it's not in search mode-->
-    <div class="horizontal layout {{ {activateSearch: !searchIsHidden} | tokenList }}">
-      <paper-icon-button icon="arrow-back" class="{{ {activateSearch: !searchIsHidden} | tokenList }}" on-tap="hideSearch" hidden$="{{searchIsHidden || !narrow}}"></paper-icon-button>
-      <paper-icon-button icon="search" class="{{ {white: !narrow} | tokenList }}" on-tap="clickedSearch" hidden$="{{narrow && !searchIsHidden}}"></paper-icon-button>
-      <div layout vertical flex>
+    <div class="horizontal layout">
+      <paper-icon-button icon="arrow-back" on-tap="hideSearch" hidden$="{{!isNarrow}}"></paper-icon-button>
+      <paper-icon-button icon="search" on-tap="clickedSearch" hidden$="{{isNarrow}}"></paper-icon-button>
+      <div class="layout vertical flex">
         <input id="searchInput" placeholder="{{placeholderText}}" value="{{searchFieldValue}}" is="core-input" hidden$="{{narrow && searchIsHidden}}">
         <div id="suggestionPlaceholder"></div>
         <!--<template bind if?="{{enableSearchSuggestions}}">-->
@@ -62,12 +61,12 @@ Reusable search input
         /**
          * TODO: description of these properties
          */
-        searchIsHidden: true,
-        enableSearchSuggestions: false,
-
-        suggestions: [],
-        selectedSuggestion: -1,
-        searchFieldValue: ''
+//        searchIsHidden: true,
+        enableSearchSuggestions: Boolean,
+        narrow: Boolean,
+//        suggestions: [],
+//        selectedSuggestion: -1,
+//        searchFieldValue: ''
       },
       // Element Lifecycle
       ready: function() {
@@ -77,9 +76,9 @@ Reusable search input
         //
         // This is the point where you should make modifications to the DOM (when
         // necessary), or kick off any processes the element wants to perform.
-        if(this.enableSearchSuggestions) {
-          this._initSearchSuggestionsEvents();
-        }
+//        if(this.enableSearchSuggestions) {
+//          this._initSearchSuggestionsEvents();
+//        }
       },
       attached: function() {
         // `attached` fires once the element and its parents have been inserted
@@ -96,121 +95,142 @@ Reusable search input
         // Use this to clean up anything you did in `attached`.
       },
       // Element Behavior
-      /**
-       * TODO: description of these methods
-       *
-       * @event uqlibrary-sear-input-back
-       */
-      hideSearch: function() {
-        this.fire('uqlibrary-search-input-back');
-        this.searchIsHidden = true;
-        this.$.searchInput.focus();
-      },
-      clickedSearch: function() {
-        if (this.narrow) {
-          if(!this.searchIsHidden) {
-            this.search();
-          } else {
-            this.fire('uqlibrary-search-input-button-clicked-narrow');
-            this.searchIsHidden = false;
-          }
-        } else {
-          this.fire('uqlibrary-search-input-button-clicked');
-          this.search();
-        }
-      },
-
-
-
-      _initSearchSuggestionsEvents: function() {
-        var that = this;
-
-        document.addEventListener('uqlibrary-search-input-search-suggestions-loaded', function (e) {
-          var _data = e.detail.data;
-          if (_data.constructor === Array) {
-            that.suggestions = _data;
-            that.selectedSuggestion = -1;
-            that.showSuggestions();
-          }
-        });
-
-      },
-
-      search: function() {
-        this.fire('uqlibrary-search-input-search-submitted', {searchTerm: this.searchFieldValue});
-      },
-
-      searchFieldValueChanged: function (oldValue, newValue) {
-        if (this.skipValueChangeHandle) {
-          this.skipValueChangeHandle = false;
-          return;
-        }
-        this.fire('uqlibrary-search-input-search-value-changed', {value: newValue});
-      },
-
-      onSearchKeys: function (ev) {
-        if (this.enableSearchSuggestions && ev.detail.key === 'down' && this.selectedSuggestion < (this.suggestions.length - 1)) {
-          this.selectedSuggestion++;
-        }
-        else if (this.enableSearchSuggestions && ev.detail.key === 'up') {
-          if (this.selectedSuggestion > 0) {
-            this.selectedSuggestion--;
-          } else {
-            this.selectedSuggestion = -1;
-          }
-        }
-        else if (ev.detail.key === 'enter') {
-          if (
-            this.enableSearchSuggestions &&
-            this.selectedSuggestion >= 0 &&
-            this.previousKey &&
-            (this.previousKey === 'up' || this.previousKey === 'down')
-          ) {
-            this.async(function () {
-              this.suggestionSearch();
-            }, 100);
-          } else {
-            this.search();
-          }
-        }
-        else if (this.enableSearchSuggestions && ev.detail.key === 'esc') {
-          this.selectedSuggestion = -1;
-          this.$.searchSuggestions.opened = false;
-          this.$.filters.opened = false;
-        }
-        this.previousKey = ev.detail.key;
-      },
-
-      onTapSuggestion: function () {
-        this.async(function () {
-          this.suggestionSearch();
-        }, 100);
-      },
-
-      suggestionSearch: function () {
-        var suggestion = this.suggestions[this.selectedSuggestion];
-
-        this.skipValueChangeHandle = true;
-        this.searchFieldValue = suggestion.text;
-        this.$.searchSuggestions.opened = false;
-        this.search();
-
-        if (suggestion.hasOwnProperty('url')) {
-          window.location.href = suggestion.url;
-        }
-
-      },
-
-      showSuggestions: function () {
-        this.async(function () {
-          if (this.suggestions.length > 0 && !this.searching) {
-            this.$.searchSuggestions.opened = true;
-          }
-          else if (this.$.searchSuggestions.opened) {
-            this.$.searchSuggestions.opened = false;
-          }
-        }, 100);
-      }
+//      /**
+//       * The uqlibrary-search-input-back event is fired
+//       * when the user taps the back button
+//       *
+//       * @event uqlibrary-search-input-back
+//       */
+//      hideSearch: function() {
+//        this.fire('uqlibrary-search-input-back');
+//        this.searchIsHidden = true;
+//        this.$.searchInput.focus();
+//      },
+//      /**
+//       * The uqlibrary-search-input-button-clicked event is fired
+//       * when the user taps the search button, likewise the
+//       * uqlibrary-search-input-button-clicked-narrow event is fired
+//       * when the user taps the search button while the viewport is narrow
+//       *
+//       * @event uqlibrary-search-input-button-clicked
+//       * @event uqlibrary-search-input-button-clicked-narrow
+//       */
+//      clickedSearch: function() {
+//        if (this.narrow) {
+//          if(!this.searchIsHidden) {
+//            this.search();
+//          } else {
+//            this.fire('uqlibrary-search-input-button-clicked-narrow');
+//            this.searchIsHidden = false;
+//          }
+//        } else {
+//          this.fire('uqlibrary-search-input-button-clicked');
+//          this.search();
+//        }
+//      },
+//
+//
+//      /**
+//       * The _initSearchSuggestionsEvents private method
+//       * is used to instantiate the search suggestions by
+//       * creating an event listener and adding relevant data
+//       * to a new array
+//       *
+//       */
+//      _initSearchSuggestionsEvents: function() {
+//        var that = this;
+//
+//        document.addEventListener('uqlibrary-search-input-search-suggestions-loaded', function (e) {
+//          var _data = e.detail.data;
+//          if (_data.constructor === Array) {
+//            that.suggestions = _data;
+//            that.selectedSuggestion = -1;
+//            that.showSuggestions();
+//          }
+//        });
+//      },
+//
+//      /**
+//       * The uqlibrary-search-input-search-submitted event is fired
+//       * when the user submits a search
+//       *
+//       * @event uqlibrary-search-input-search-submitted
+//       */
+//      search: function() {
+//        this.fire('uqlibrary-search-input-search-submitted', {searchTerm: this.searchFieldValue});
+//      },
+//
+//      searchFieldValueChanged: function (oldValue, newValue) {
+//        if (this.skipValueChangeHandle) {
+//          this.skipValueChangeHandle = false;
+//          return;
+//        }
+//        this.fire('uqlibrary-search-input-search-value-changed', {value: newValue});
+//      },
+//
+//      onSearchKeys: function (ev) {
+//        if (this.enableSearchSuggestions && ev.detail.key === 'down' && this.selectedSuggestion < (this.suggestions.length - 1)) {
+//          this.selectedSuggestion++;
+//        }
+//        else if (this.enableSearchSuggestions && ev.detail.key === 'up') {
+//          if (this.selectedSuggestion > 0) {
+//            this.selectedSuggestion--;
+//          } else {
+//            this.selectedSuggestion = -1;
+//          }
+//        }
+//        else if (ev.detail.key === 'enter') {
+//          if (
+//            this.enableSearchSuggestions &&
+//            this.selectedSuggestion >= 0 &&
+//            this.previousKey &&
+//            (this.previousKey === 'up' || this.previousKey === 'down')
+//          ) {
+//            this.async(function () {
+//              this.suggestionSearch();
+//            }, 100);
+//          } else {
+//            this.search();
+//          }
+//        }
+//        else if (this.enableSearchSuggestions && ev.detail.key === 'esc') {
+//          this.selectedSuggestion = -1;
+//          this.$.searchSuggestions.opened = false;
+//          this.$.filters.opened = false;
+//        }
+//        this.previousKey = ev.detail.key;
+//      },
+//
+//      onTapSuggestion: function () {
+//        this.async(function () {
+//          this.suggestionSearch();
+//        }, 100);
+//      },
+//
+//      suggestionSearch: function () {
+//        var suggestion = this.suggestions[this.selectedSuggestion];
+//
+//        this.skipValueChangeHandle = true;
+//        this.searchFieldValue = suggestion.text;
+//        this.$.searchSuggestions.opened = false;
+//        this.search();
+//
+//        if (suggestion.hasOwnProperty('url')) {
+//          window.location.href = suggestion.url;
+//        }
+//
+//      },
+//
+//      showSuggestions: function () {
+//        this.async(function () {
+//          if (this.suggestions.length > 0 && !this.searching) {
+//            this.$.searchSuggestions.opened = true;
+//          }
+//          else if (this.$.searchSuggestions.opened) {
+//            this.$.searchSuggestions.opened = false;
+//          }
+//        }, 100);
+//      }
     });
   </script>
 </dom-module>
