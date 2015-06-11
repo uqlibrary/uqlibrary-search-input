@@ -1,5 +1,7 @@
-<link rel="import" href="../core-input/core-input.html">
-<link rel="import" href="../core-icon-button/core-icon-button.html">
+
+<link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../iron-icons/iron-icons.html">
 
 <!--
 
@@ -15,59 +17,90 @@ Reusable search input
 @homepage https://github.com/uqlibrary/uqlibrary-search-input
 -->
 
-<polymer-element name="uqlibrary-search-input" attributes="narrow placeholderText enableSearchSuggestions">
-  <template>
+<dom-module id="uqlibrary-search-input" attributes="narrow placeholderText enableSearchSuggestions">
+  <link rel="stylesheet" href="uqlibrary-search-input.css">
+  <template is="dom-bind">
     <!--<link rel="stylesheet" href="../uqlibrary-elements/resources/theme/component.css">-->
-    <link rel="stylesheet" href="uqlibrary-search-input.css">
+
 
     <!--back arrow is hidden if view is not narrow and if it's not in search mode-->
-    <div horizontal layout class="{{ {activateSearch: !searchIsHidden} | tokenList }}">
-      <core-icon-button icon="arrow-back" class="{{ {activateSearch: !searchIsHidden} | tokenList }}" on-tap="{{hideSearch}}" hidden?="{{searchIsHidden || !narrow}}"></core-icon-button>
-      <core-icon-button icon="search" class="{{ {white: !narrow} | tokenList }}" on-tap="{{clickedSearch}}" hidden?="{{narrow && !searchIsHidden}}"></core-icon-button>
+    <div class="horizontal layout {{ {activateSearch: !searchIsHidden} | tokenList }}">
+      <paper-icon-button icon="arrow-back" class="{{ {activateSearch: !searchIsHidden} | tokenList }}" on-tap="hideSearch" hidden$="{{searchIsHidden || !narrow}}"></paper-icon-button>
+      <paper-icon-button icon="search" class="{{ {white: !narrow} | tokenList }}" on-tap="clickedSearch" hidden$="{{narrow && !searchIsHidden}}"></paper-icon-button>
       <div layout vertical flex>
-        <input id="searchInput" placeholder="{{placeholderText}}" value="{{searchFieldValue}}" is="core-input" hidden?="{{narrow && searchIsHidden}}">
+        <input id="searchInput" placeholder="{{placeholderText}}" value="{{searchFieldValue}}" is="core-input" hidden$="{{narrow && searchIsHidden}}">
         <div id="suggestionPlaceholder"></div>
-        <template bind if?="{{enableSearchSuggestions}}">
-          <paper-dropdown
-                           id="searchSuggestions"
-                           class="no-padding"
-                           relatedTarget="{{$.suggestionPlaceholder}}"
-                           autoFocusDisabled="true">
-            <core-selector selected="{{selectedSuggestion}}"
-                           selectedAttribute=""
-                           id="suggestionSelector">
-              <template repeat="{{suggestions as item}}">
-                <paper-item on-tap="{{onTapSuggestion}}">
-                  <div class="{{'truncate' + (recent ? ' recent' : '')}}">{{item.text}}</div>
-                </paper-item>
-              </template>
-            </core-selector>
-          </paper-dropdown>
-        </template>
+        <!--<template bind if?="{{enableSearchSuggestions}}">-->
+          <!--<paper-dropdown-->
+                           <!--id="searchSuggestions"-->
+                           <!--class="no-padding"-->
+                           <!--relatedTarget="{{$.suggestionPlaceholder}}"-->
+                           <!--autoFocusDisabled="true">-->
+            <!--<core-selector selected="{{selectedSuggestion}}"-->
+                           <!--selectedAttribute=""-->
+                           <!--id="suggestionSelector">-->
+              <!--<template repeat="{{suggestions as item}}">-->
+                <!--<paper-item on-tap="{{onTapSuggestion}}">-->
+                  <!--<div class="{{'truncate' + (recent ? ' recent' : '')}}">{{item.text}}</div>-->
+                <!--</paper-item>-->
+              <!--</template>-->
+            <!--</core-selector>-->
+          <!--</paper-dropdown>-->
+        <!--</template>-->
         </div>
 
 
 
-      <core-icon-button icon="search" class="{{ {activateSearch: !searchIsHidden} | tokenList }}" on-tap="{{clickedSearch}}" hidden?="{{searchIsHidden || !narrow}}"></core-icon-button>
+      <paper-icon-button icon="search" class="{{ {activateSearch: !searchIsHidden} | tokenList }}" on-tap="{{clickedSearch}}" hidden?="{{searchIsHidden || !narrow}}"></paper-icon-button>
     </div>
   </template>
   <script>
-    Polymer('uqlibrary-search-input', {
-      searchIsHidden: true,
-      enableSearchSuggestions: false,
 
-      suggestions: [],
-      selectedSuggestion: -1,
-      searchFieldValue: '',
+    Polymer({
+      is: 'uqlibrary-search-input',
+      properties: {
+        /**
+         * TODO: description of these properties
+         */
+        searchIsHidden: true,
+        enableSearchSuggestions: false,
 
-      ready: function () {
-
+        suggestions: [],
+        selectedSuggestion: -1,
+        searchFieldValue: ''
+      },
+      // Element Lifecycle
+      ready: function() {
+        // `ready` is called after all elements have been configured, but
+        // propagates bottom-up. This element's children are ready, but parents
+        // are not.
+        //
+        // This is the point where you should make modifications to the DOM (when
+        // necessary), or kick off any processes the element wants to perform.
         if(this.enableSearchSuggestions) {
           this._initSearchSuggestionsEvents();
         }
-
       },
-
+      attached: function() {
+        // `attached` fires once the element and its parents have been inserted
+        // into a document.
+        //
+        // This is a good place to perform any work related to your element's
+        // visual state or active behavior (measuring sizes, beginning animations,
+        // loading resources, etc).
+      },
+      detached: function() {
+        // The analog to `attached`, `detached` fires when the element has been
+        // removed from a document.
+        //
+        // Use this to clean up anything you did in `attached`.
+      },
+      // Element Behavior
+      /**
+       * TODO: description of these methods
+       *
+       * @event uqlibrary-sear-input-back
+       */
       hideSearch: function() {
         this.fire('uqlibrary-search-input-back');
         this.searchIsHidden = true;
@@ -128,11 +161,11 @@ Reusable search input
         }
         else if (ev.detail.key === 'enter') {
           if (
-              this.enableSearchSuggestions &&
-              this.selectedSuggestion >= 0 &&
-              this.previousKey &&
-              (this.previousKey === 'up' || this.previousKey === 'down')
-            ) {
+            this.enableSearchSuggestions &&
+            this.selectedSuggestion >= 0 &&
+            this.previousKey &&
+            (this.previousKey === 'up' || this.previousKey === 'down')
+          ) {
             this.async(function () {
               this.suggestionSearch();
             }, 100);
@@ -178,8 +211,6 @@ Reusable search input
           }
         }, 100);
       }
-
-
     });
   </script>
-</polymer-element>
+</dom-module>
