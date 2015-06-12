@@ -272,16 +272,12 @@ Reusable search input
       showSuggestions: function () {
 
         var that = this;
-
 //        this.$.searchSuggestions.toggleClass('hidden');
-        this.async(function () {
-          if (that.suggestions.length > 0 && !that.searching) {
+//        this.async(function () {
+          if (that.suggestions.length > 0 && this.$.searchSuggestions.classList.contains('hidden')) {
             that.$.searchSuggestions.toggleClass('hidden');
           }
-//          else if (this.$.searchSuggestions.classList.contains('hidden')) {
-//            this.$.searchSuggestions.toggleClass('hidden');
-//          }
-        }, 100);
+//        }, 100);
       }
     });
   </script>
