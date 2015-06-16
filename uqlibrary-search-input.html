@@ -22,19 +22,19 @@ Reusable search input
 
 <dom-module id="uqlibrary-search-input">
   <style>
-    paper-input {
+    :host {
       background: rgba(255,255,255,.15);
       border-radius: 2px;
+      transition: background .2s;
+      margin: 0 16px;
     }
-    paper-input:hover, paper-input:focus {
-      background: rgba(255,255,255,.25);
-    }
-    .paper-input-container-0 .input-content.paper-input-container input {
-      color: white;
+    :host:hover, :host:focus {
+      background: rgba(255, 255, 255, .25);
+      transition: background .2s;
     }
     .hidden {
       transform: translateY(-200%);
-      /*visibility: hidden;*/
+      visibility: hidden;
       transition: transform .2s,visibility .2s;
     }
     paper-menu {
@@ -52,10 +52,8 @@ Reusable search input
   </style>
   <template>
 
-
-    <!--back arrow is hidden if view is not narrow and if it's not in search mode-->
     <div class="horizontal layout">
-      <paper-icon-button icon="arrow-back" on-tap="hideSearch" hidden$="{{!searchIsActive}}"></paper-icon-button>
+      <!--<paper-icon-button icon="arrow-back" on-tap="hideSearch" hidden$="{{!isNarrow}}"></paper-icon-button>-->
       <paper-icon-button icon="search" on-tap="clickedSearch" hidden$="{{isNarrow}}"></paper-icon-button>
       <div class="layout vertical flex">
         <paper-input no-label-float
@@ -94,12 +92,18 @@ Reusable search input
         /**
          * TODO: description of these properties
          */
-        searchIsHidden: Boolean,
+        searchIsHidden: {
+          type: Boolean,
+          value: false
+        },
         enableSearchSuggestions: {
           type: Boolean,
           value: false
         },
-        isNarrow: Boolean,
+        isNarrow: {
+          type: Boolean,
+          value: false
+        },
         suggestions: Array,
         selectedSuggestion: Number,
         searchFieldValue: {
@@ -205,6 +209,7 @@ Reusable search input
        */
       search: function() {
         this.fire('uqlibrary-search-input-search-submitted', {searchTerm: this.searchFieldValue});
+        this.$.searchSuggestions.toggleClass('hidden');
       },
 
       searchFieldValueChanged: function (newValue) {
