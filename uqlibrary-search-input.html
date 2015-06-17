@@ -36,6 +36,9 @@ Reusable search input
       background: #fff !important;
       color: #333 !important;
     }
+    .turnTextLight {
+      color: #999 !important;
+    }
     .inactive {
       margin: 0 !important;
       background: none !important;
@@ -97,8 +100,8 @@ Reusable search input
           class="flex"
           placeholder="{{placeholderText}}"
           value="{{searchFieldValue}}">
-          <label>Search</label>
-          <input is="iron-input">
+          <label id="searchInputLabel">Search</label>
+          <input id="searchRawInput" is="iron-input">
         </paper-input-container>
         <div id="suggestionPlaceholder" hidden$="{{!enableSearchSuggestions}}">
 
@@ -196,13 +199,9 @@ Reusable search input
       },
       activateSearch: function() {
           this.toggleClass('turnLight', this.searchIsHidden, this.$.search);
+        console.log(this.$.searchInputChange);
+        this.$.searchInputLabel.classList.toggle('turnTextLight');
           this.searchIsHidden = !this.searchIsHidden;
-        this.$.searchInput.focus();
-        console.log(this.$.searchInput.focused);
-      },
-      logConsole: function() {
-        console.log(this.$.searchInput.focused);
-        console.log('got here!');
       },
       /**
        * The uqlibrary-search-input-button-clicked event is fired
