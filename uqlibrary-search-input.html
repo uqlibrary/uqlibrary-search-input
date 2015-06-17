@@ -80,7 +80,7 @@ Reusable search input
 
     <!--<div id="search" class="horizontal layout searchContainer inactive">-->
     <div id="search" class$="[[_computeSearchClass(isNarrow)]]">
-      <paper-icon-button icon="arrow-back" on-tap="hideSearch" hidden$={{searchIsHidden}}></paper-icon-button>
+      <paper-icon-button icon="arrow-back" on-tap="hideSearch" hidden="true"></paper-icon-button>
       <paper-icon-button id="desktopSearchButton" icon="search" on-tap="clickedSearch" hidden$="{{isNarrow}}"></paper-icon-button>
       <div class="layout vertical flex">
         <paper-input-container
@@ -88,7 +88,7 @@ Reusable search input
           id="searchInput"
           on-tap=activateSearch
           label="Search"
-          hidden$="_computeSearchHidden"
+          hidden$="{{isNarrow}}"
           class$="flex"
           placeholder="{{placeholderText}}"
           value="{{searchFieldValue}}">
@@ -257,7 +257,7 @@ Reusable search input
       },
 
       _computeSearchHidden: function() {
-        return (this.isNarrow && this.searchIsHidden);
+        return (isNarrow && this.searchIsHidden);
       },
 
       /**
