@@ -22,24 +22,35 @@ Reusable search input
 
 <dom-module id="uqlibrary-search-input">
   <style>
-    :host {
+    :host .searchContainer {
       background: rgba(255,255,255,.15);
       border-radius: 2px;
       transition: background .2s;
       margin: 0 16px;
     }
-    :host:hover, :host:focus {
+    :host .searchContainer:hover, :host .searchContainer:focus {
       background: rgba(255, 255, 255, .25);
       transition: background .2s;
     }
+    .turnLight {
+      background: #fff !important;
+      color: #333 !important;
+    }
+    .turnDark {
+
+    }
+    .inactive {
+      margin: 0 !important;
+      background: none !important;
+    }
     .hidden {
       transform: translateY(-200%);
-      visibility: hidden;
+      /*visibility: hidden;*/
       transition: transform .2s,visibility .2s;
     }
     paper-menu {
       transform: translateY(12px);
-      visibility: visible;
+      /*visibility: visible;*/
       position: absolute;
       height: 145px;
       background: #fff;
@@ -52,11 +63,13 @@ Reusable search input
   </style>
   <template>
 
-    <div class="horizontal layout">
-      <!--<paper-icon-button icon="arrow-back" on-tap="hideSearch" hidden$="{{!isNarrow}}"></paper-icon-button>-->
+    <!--<div id="search" class="horizontal layout searchContainer inactive">-->
+    <div id="search" class$="[[_computeSearchClass(isNarrow)]]">
+      <!--<paper-icon-button icon="arrow-back" on-tap="hideSearch" hidden$="{{searchIsHidden}}"></paper-icon-button>-->
       <paper-icon-button icon="search" on-tap="clickedSearch" hidden$="{{isNarrow}}"></paper-icon-button>
       <div class="layout vertical flex">
         <paper-input no-label-float
+                     on-tap=activateSearch
                      label="Search"
                      hidden$="{{isNarrow}}"
                      focused$="logConsole"
@@ -94,7 +107,8 @@ Reusable search input
          */
         searchIsHidden: {
           type: Boolean,
-          value: false
+          value: true,
+          notify: true
         },
         enableSearchSuggestions: {
           type: Boolean,
@@ -156,6 +170,10 @@ Reusable search input
         this.searchIsHidden = true;
         this.$.searchInput.focus();
       },
+      activateSearch: function() {
+          this.toggleClass('turnLight', this.searchIsHidden, this.$.search);
+          this.searchIsHidden = !this.searchIsHidden;
+      },
       /**
        * The uqlibrary-search-input-button-clicked event is fired
        * when the user taps the search button, likewise the
@@ -179,7 +197,6 @@ Reusable search input
         }
       },
 
-
       /**
        * The _initSearchSuggestionsEvents private method
        * is used to instantiate the search suggestions by
@@ -199,6 +216,15 @@ Reusable search input
             that.showSuggestions();
           }
         });
+      },
+
+      _computeSearchClass: function(isNarrow) {
+        if (isNarrow) {
+          return 'horizontal layout searchContainer inactive';
+        } else {
+          return 'horizontal layout searchContainer ';
+        }
+
       },
 
       /**
