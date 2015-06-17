@@ -72,7 +72,7 @@ Reusable search input
     paper-input-container /deep/ label {
       padding-top: 8px;
     }
-    paper-icon-button[icon=search] {
+    #desktopSearchButton {
       margin: 0 16px;
     }
   </style>
@@ -80,34 +80,26 @@ Reusable search input
 
     <!--<div id="search" class="horizontal layout searchContainer inactive">-->
     <div id="search" class$="[[_computeSearchClass(isNarrow)]]">
-      <!--<paper-icon-button icon="arrow-back" on-tap="hideSearch" hidden$="{{searchIsHidden}}"></paper-icon-button>-->
-      <paper-icon-button icon="search" on-tap="clickedSearch" hidden$="{{isNarrow}}"></paper-icon-button>
+      <paper-icon-button icon="arrow-back" on-tap="hideSearch" hidden$={{searchIsHidden}}></paper-icon-button>
+      <paper-icon-button id="desktopSearchButton" icon="search" on-tap="clickedSearch" hidden$="{{isNarrow}}"></paper-icon-button>
       <div class="layout vertical flex">
-        <!--<paper-input no-label-float-->
-                     <!--id="searchInput"-->
-                     <!--on-tap=activateSearch-->
-                     <!--label="Search"-->
-                     <!--hidden$="{{isNarrow}}"-->
-                     <!--class="flex"-->
-                     <!--placeholder="{{placeholderText}}"-->
-                     <!--value="{{searchFieldValue}}"></paper-input>-->
         <paper-input-container
           no-label-float
           id="searchInput"
           on-tap=activateSearch
           label="Search"
-          hidden$="{{isNarrow}}"
-          class="flex"
+          hidden$="_computeSearchHidden"
+          class$="flex"
           placeholder="{{placeholderText}}"
           value="{{searchFieldValue}}">
           <label id="searchInputLabel">Search</label>
           <input id="searchRawInput" is="iron-input">
         </paper-input-container>
-        <div id="suggestionPlaceholder" hidden$="{{!enableSearchSuggestions}}">
 
-          <paper-menu      id="searchSuggestions"
-                           class="list hidden"
-                           autoFocusDisabled="true">
+        <div id="suggestionPlaceholder" hidden$="{{!enableSearchSuggestions}}">
+          <paper-menu id="searchSuggestions"
+                      class="list hidden"
+                      autoFocusDisabled="true">
             <iron-selector selected="{{selectedSuggestion}}"
                            selectedAttribute=""
                            id="suggestionSelector">
@@ -195,13 +187,12 @@ Reusable search input
       hideSearch: function() {
         this.fire('uqlibrary-search-input-back');
         this.searchIsHidden = true;
-        this.$.searchInput.focus();
       },
       activateSearch: function() {
-          this.toggleClass('turnLight', this.searchIsHidden, this.$.search);
+        this.toggleClass('turnLight', this.searchIsHidden, this.$.search);
         console.log(this.$.searchInputChange);
         this.$.searchInputLabel.classList.toggle('turnTextLight');
-          this.searchIsHidden = !this.searchIsHidden;
+        this.searchIsHidden = !this.searchIsHidden;
       },
       /**
        * The uqlibrary-search-input-button-clicked event is fired
@@ -213,7 +204,7 @@ Reusable search input
        * @event uqlibrary-search-input-button-clicked-narrow
        */
       clickedSearch: function() {
-        console.log(this.$.searchInput.focused);
+
         if (this.isNarrow) {
           if(!this.searchIsHidden) {
             console.log('clicked search while narrow and search is not hidden!');
@@ -257,7 +248,16 @@ Reusable search input
         } else {
           return 'horizontal layout searchContainer ';
         }
+      },
 
+      _computeBackArrow: function() {
+        console.log(this.isNarrow);
+        console.log(this.isNarrow && this.searchIsHidden);
+        return (this.isNarrow && this.searchIsHidden);
+      },
+
+      _computeSearchHidden: function() {
+        return (this.isNarrow && this.searchIsHidden);
       },
 
       /**
