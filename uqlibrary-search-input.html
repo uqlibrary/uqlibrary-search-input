@@ -26,7 +26,7 @@ Reusable search input
       background: rgba(255,255,255,.15);
       border-radius: 2px;
       transition: background .2s;
-      margin: 0 16px;
+      margin: 0 24px;
     }
     :host .searchContainer:hover, :host .searchContainer:focus {
       background: rgba(255, 255, 255, .25);
@@ -35,9 +35,6 @@ Reusable search input
     .turnLight {
       background: #fff !important;
       color: #333 !important;
-    }
-    .turnDark {
-
     }
     .inactive {
       margin: 0 !important;
@@ -60,6 +57,21 @@ Reusable search input
       border-radius: 2px;
       transition: transform .2s,visibility .2s;
     }
+    paper-input-container {
+      padding: 0 !important;
+    }
+    paper-input-container /deep/ .underline {
+      display: none;
+    }
+    paper-input-container /deep/ input {
+      height: 40px;
+    }
+    paper-input-container /deep/ label {
+      padding-top: 8px;
+    }
+    paper-icon-button[icon=search] {
+      margin: 0 16px;
+    }
   </style>
   <template>
 
@@ -68,14 +80,26 @@ Reusable search input
       <!--<paper-icon-button icon="arrow-back" on-tap="hideSearch" hidden$="{{searchIsHidden}}"></paper-icon-button>-->
       <paper-icon-button icon="search" on-tap="clickedSearch" hidden$="{{isNarrow}}"></paper-icon-button>
       <div class="layout vertical flex">
-        <paper-input no-label-float
-                     on-tap=activateSearch
-                     label="Search"
-                     hidden$="{{isNarrow}}"
-                     focused$="logConsole"
-                     class="flex"
-                     placeholder="{{placeholderText}}"
-                     value="{{searchFieldValue}}"></paper-input>
+        <!--<paper-input no-label-float-->
+                     <!--id="searchInput"-->
+                     <!--on-tap=activateSearch-->
+                     <!--label="Search"-->
+                     <!--hidden$="{{isNarrow}}"-->
+                     <!--class="flex"-->
+                     <!--placeholder="{{placeholderText}}"-->
+                     <!--value="{{searchFieldValue}}"></paper-input>-->
+        <paper-input-container
+          no-label-float
+          id="searchInput"
+          on-tap=activateSearch
+          label="Search"
+          hidden$="{{isNarrow}}"
+          class="flex"
+          placeholder="{{placeholderText}}"
+          value="{{searchFieldValue}}">
+          <label>Search</label>
+          <input is="iron-input">
+        </paper-input-container>
         <div id="suggestionPlaceholder" hidden$="{{!enableSearchSuggestions}}">
 
           <paper-menu      id="searchSuggestions"
@@ -173,6 +197,12 @@ Reusable search input
       activateSearch: function() {
           this.toggleClass('turnLight', this.searchIsHidden, this.$.search);
           this.searchIsHidden = !this.searchIsHidden;
+        this.$.searchInput.focus();
+        console.log(this.$.searchInput.focused);
+      },
+      logConsole: function() {
+        console.log(this.$.searchInput.focused);
+        console.log('got here!');
       },
       /**
        * The uqlibrary-search-input-button-clicked event is fired
@@ -184,14 +214,18 @@ Reusable search input
        * @event uqlibrary-search-input-button-clicked-narrow
        */
       clickedSearch: function() {
-        if (this.narrow) {
+        console.log(this.$.searchInput.focused);
+        if (this.isNarrow) {
           if(!this.searchIsHidden) {
+            console.log('clicked search while narrow and search is not hidden!');
             this.search();
           } else {
+            console.log('clicked search while narrow and search is hidden!');
             this.fire('uqlibrary-search-input-button-clicked-narrow');
             this.searchIsHidden = false;
           }
         } else {
+          console.log('clicked search while not narrow!');
           this.fire('uqlibrary-search-input-button-clicked');
           this.search();
         }
