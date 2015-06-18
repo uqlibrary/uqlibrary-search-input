@@ -80,7 +80,7 @@ Reusable search input
 
     <!--<div id="search" class="horizontal layout searchContainer inactive">-->
     <div id="search" class$="[[_computeSearchClass(isNarrow)]]">
-      <paper-icon-button icon="arrow-back" on-tap="hideSearch" hidden="true"></paper-icon-button>
+      <paper-icon-button icon="arrow-back" on-tap="hideSearch" hidden$="{{searchIsHidden}}"></paper-icon-button>
       <paper-icon-button id="desktopSearchButton" icon="search" on-tap="clickedSearch" hidden$="{{isNarrow}}"></paper-icon-button>
       <div class="layout vertical flex">
         <paper-input-container
@@ -122,12 +122,13 @@ Reusable search input
 
       properties: {
         /**
-         * TODO: description of these properties
+         * searchIsHidden stores the state of the search input
          */
         searchIsHidden: {
           type: Boolean,
           value: true,
-          notify: true
+          notify: true,
+          observer: '_searchState'
         },
         enableSearchSuggestions: {
           type: Boolean,
@@ -162,21 +163,6 @@ Reusable search input
           this._initSearchSuggestionsEvents();
         }
       },
-      attached: function() {
-        console.log(this.enableSearchSuggestions);
-        // `attached` fires once the element and its parents have been inserted
-        // into a document.
-        //
-        // This is a good place to perform any work related to your element's
-        // visual state or active behavior (measuring sizes, beginning animations,
-        // loading resources, etc).
-      },
-      detached: function() {
-        // The analog to `attached`, `detached` fires when the element has been
-        // removed from a document.
-        //
-        // Use this to clean up anything you did in `attached`.
-      },
 
       /**
        * The uqlibrary-search-input-back event is fired
@@ -186,13 +172,15 @@ Reusable search input
        */
       hideSearch: function() {
         this.fire('uqlibrary-search-input-back');
+        this.$.searchInputLabel.classList.toggle('turnTextLight');
         this.searchIsHidden = true;
+
       },
       activateSearch: function() {
         this.toggleClass('turnLight', this.searchIsHidden, this.$.search);
-        console.log(this.$.searchInputChange);
+//        console.log(this.$.searchInputChange);
         this.$.searchInputLabel.classList.toggle('turnTextLight');
-        this.searchIsHidden = !this.searchIsHidden;
+        this.searchIsHidden = false;
       },
       /**
        * The uqlibrary-search-input-button-clicked event is fired
@@ -258,6 +246,10 @@ Reusable search input
 
       _computeSearchHidden: function() {
         return (isNarrow && this.searchIsHidden);
+      },
+
+      _searchState: function() {
+
       },
 
       /**
