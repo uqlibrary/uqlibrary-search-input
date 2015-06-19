@@ -81,7 +81,7 @@ Reusable search input
     <!--<div id="search" class="horizontal layout searchContainer inactive">-->
     <div id="search" class$="[[_computeSearchClass(isNarrow)]]">
       <paper-icon-button icon="arrow-back" on-tap="hideSearch" hidden$="{{searchIsHidden}}"></paper-icon-button>
-      <paper-icon-button id="desktopSearchButton" icon="search" on-tap="clickedSearch" hidden$="{{isNarrow}}"></paper-icon-button>
+      <paper-icon-button id="desktopSearchButton" icon="search" on-tap="clickedSearchDesktop" hidden$="{{isNarrow}}"></paper-icon-button>
       <div class="layout vertical flex">
         <paper-input-container
           no-label-float
@@ -112,7 +112,7 @@ Reusable search input
           </paper-menu>
         </div>
         </div>
-      <paper-icon-button icon="search" on-tap="clickedSearch" hidden$="{{!isNarrow}}"></paper-icon-button>
+      <paper-icon-button icon="search" on-tap="clickedSearchMobile" hidden$="{{!isNarrow}}"></paper-icon-button>
     </div>
   </template>
   <script>
@@ -129,6 +129,10 @@ Reusable search input
           value: true,
           notify: true,
           observer: '_searchState'
+        },
+        searchIsActive: {
+          type: Boolean,
+          value: false
         },
         enableSearchSuggestions: {
           type: Boolean,
@@ -177,10 +181,15 @@ Reusable search input
 
       },
       activateSearch: function() {
-        this.toggleClass('turnLight', this.searchIsHidden, this.$.search);
-//        console.log(this.$.searchInputChange);
-        this.$.searchInputLabel.classList.toggle('turnTextLight');
-        this.searchIsHidden = false;
+        if (this.isNarrow) {
+          this.toggleClass('turnLight', this.searchIsHidden, this.$.search);
+          this.searchIsActive = !this.searchIsActive;
+        } else if (!this.isNarrow) {
+          this.toggleClass('turnLight', !this.searchIsActive, this.$.search);
+          this.$.searchInputLabel.classList.toggle('turnTextLight');
+          this.searchIsActive = !this.searchIsActive;
+        }
+
       },
       /**
        * The uqlibrary-search-input-button-clicked event is fired
@@ -191,7 +200,7 @@ Reusable search input
        * @event uqlibrary-search-input-button-clicked
        * @event uqlibrary-search-input-button-clicked-narrow
        */
-      clickedSearch: function() {
+      clickedSearchMobile: function() {
 
         if (this.isNarrow) {
           if(!this.searchIsHidden) {
