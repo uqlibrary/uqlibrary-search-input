@@ -97,7 +97,7 @@ Reusable search input
         </paper-input-container>
 
         <div id="suggestionPlaceholder" hidden$="{{!enableSearchSuggestions}}">
-          <paper-menu id="searchSuggestions"
+          <div id="searchSuggestions"
                       class="list hidden"
                       autoFocusDisabled="true">
             <iron-selector selected="{{selectedSuggestion}}"
@@ -109,7 +109,7 @@ Reusable search input
                 </paper-item>
               </template>
             </iron-selector>
-          </paper-menu>
+          </div>
         </div>
         </div>
       <paper-icon-button icon="search" on-tap="clickedSearchMobile" hidden$="{{!isNarrow}}"></paper-icon-button>
@@ -182,12 +182,15 @@ Reusable search input
       },
       activateSearch: function() {
         if (this.isNarrow) {
-          this.toggleClass('turnLight', this.searchIsHidden, this.$.search);
-          this.searchIsActive = !this.searchIsActive;
+//          this.toggleClass('turnLight', this.searchIsHidden, this.$.search);
+          this.$.search.classList.add('turnLight');
+          this.searchIsActive = true;
         } else if (!this.isNarrow) {
-          this.toggleClass('turnLight', !this.searchIsActive, this.$.search);
-          this.$.searchInputLabel.classList.toggle('turnTextLight');
-          this.searchIsActive = !this.searchIsActive;
+//          this.toggleClass('turnLight', !this.searchIsActive, this.$.search);
+          this.$.search.classList.add('turnLight');
+//          this.$.searchInputLabel.classList.toggle('turnTextLight');
+          this.$.searchInputLabel.classList.add('turnTextLight');
+          this.searchIsActive = true;
         }
 
       },
@@ -211,11 +214,13 @@ Reusable search input
             this.fire('uqlibrary-search-input-button-clicked-narrow');
             this.searchIsHidden = false;
           }
-        } else {
+        }
+      },
+
+      clickedSearchDesktop: function() {
           console.log('clicked search while not narrow!');
           this.fire('uqlibrary-search-input-button-clicked');
           this.search();
-        }
       },
 
       /**
@@ -269,7 +274,7 @@ Reusable search input
        */
       search: function() {
         this.fire('uqlibrary-search-input-search-submitted', {searchTerm: this.searchFieldValue});
-        this.$.searchSuggestions.toggleClass('hidden');
+        this.$.searchSuggestions.classList.add('hidden');
       },
 
       searchFieldValueChanged: function (newValue) {
